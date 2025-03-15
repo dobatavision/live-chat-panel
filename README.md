@@ -1,2 +1,2 @@
 # live-chat-panel
-Admin and user auth panel with live chat socket between them
+Admin and User auth panel with live chat socket between them
