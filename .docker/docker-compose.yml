@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  ubuntu:
+    image: ubuntu:latest
+    container_name: ubuntu
+    hostname: ubuntu
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      TZ: Europe/Sofia
+    restart: unless-stopped
+    entrypoint: /entrypoint.sh
+    ports:
+      - "8081:80"
+    networks:
+      - mynet
+    volumes:
+      - ../src/:/mnt/live-chat-panel
+      - mysql
+    depends_on:
+      - mysql
+      # - cache
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql_chat
+    hostname: mysql_chat
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: chatDB
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypass
+      TZ: Europe/Sofia
+    ports:
+      - "33306:3306"
+    networks:
+      - mynet
+    volumes:
+      - mysql_store:/var/lib/mysql
+
+  # cache:
+  #   image: redis:latest
+  #   container_name: redis
+  #   hostname: redis
+  #   restart: always
+  #   ports:
+  #     - '6379:6379'
+  #   # command: redis-server --save 20 1 --loglevel warning --requirepass redispass
+  #   networks:
+  #     - mynet
+   
+networks:
+  mynet:
+    driver: bridge
+volumes:
+  mysql_store:
+    driver: local
