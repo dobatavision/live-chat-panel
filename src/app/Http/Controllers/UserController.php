@@ -34,14 +34,14 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'group' => 'required|string|in:user,admin',
+            'role' => 'required|string|in:user,admin',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'group' => $request->group,
+            'role' => $request->role,
         ]);
 
         Auth::login($user);
