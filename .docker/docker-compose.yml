@@ -14,6 +14,7 @@ services:
     entrypoint: /entrypoint.sh
     ports:
       - "8081:80"
+      - "8080:8080"
     networks:
       - mynet
     volumes:
