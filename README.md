@@ -33,20 +33,23 @@ Admin and User auth panel with live chat socket between them
    You can login from two browsers with different users and open chat beetween them and fun :)
    Automatic open chat modal view when someone send message to you.
    Only Admin can change the data of users 'role' with middleware Spatie.
+
    Credentials login:
+   ```bash
    Admin:
    user1@test.com
    password
-
+   ```
+   ```bash
    User:
    user2@test.com
    password
-
+   ```
    ...
 
 
 
-4. View the logs of the Ubuntu container:
+5. View the logs of the Ubuntu container:
    ```bash
    docker container logs -f ubuntu
    ```
