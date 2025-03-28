@@ -1,5 +1,8 @@
+# live-chat-panel
+Admin and User auth panel with live chat socket between them
+
 # Docker Ubuntu and MySQL
-# PHP 8.3.17 / Laravel 12.0.1
+# PHP 8.3.19 / Laravel 12.3.0 / NodeJS v20.19.0 / npm 10.8.2 
 
 ## Setup Instructions
 
@@ -13,7 +16,10 @@
    ```bash
    cd live-chat-panel/.docker
    docker-compose up --build -d
+
    ```
+   wait at least 30sec after the containers are up
+   
     docker-compose version 1.29.2, build unknown
 
     docker-py version: 5.0.3
@@ -27,6 +33,17 @@
    You can login from two browsers with different users and open chat beetween them and fun :)
    Automatic open chat modal view when someone send message to you.
    Only Admin can change the data of users 'role' with middleware Spatie.
+   Credentials login:
+   Admin:
+   user1@test.com
+   password
+
+   User:
+   user2@test.com
+   password
+
+   ...
+
 
 
 4. View the logs of the Ubuntu container:
