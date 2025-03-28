@@ -23,9 +23,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     cron \
     && apt-get clean && apt-get install mc -y && apt-get install mysql-client -y && apt-get install git -y && apt-get install composer -y \
-    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && apt-get install -y npm
+    
 
 # Copy default nginx config
 COPY default /etc/nginx/sites-available/default
