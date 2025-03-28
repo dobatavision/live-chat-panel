@@ -13,8 +13,15 @@ service nginx start
 sleep 2
 php composer.phar install
 
-sleep 2
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt-get install -y nodejs
 
+node -v
+npm -v
+
+npm install
+
+# Generate application key
 php artisan key:generate
 
 chmod -R 777 /mnt/live-chat-panel/storage
