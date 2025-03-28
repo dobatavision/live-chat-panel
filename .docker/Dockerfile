@@ -21,8 +21,7 @@ RUN apt-get update && apt-get install -y \
     nginx \
     wget \
     cron \
-    && apt-get clean && apt-get install mc -y && apt-get install mysql-client -y && apt-get install git -y && apt-get install composer -y \
-    
+    && apt-get clean && apt-get install mc -y && apt-get install mysql-client -y && apt-get install git -y && apt-get install composer -y
 
 # Copy default nginx config
 COPY default /etc/nginx/sites-available/default
