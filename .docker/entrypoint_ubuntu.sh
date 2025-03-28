@@ -29,9 +29,9 @@ service php8.3-fpm restart
 #To be sure that the database is up and running
 sleep 10
 
-npm run build
+# npm run build
 
-sleep 2
+# sleep 2
 
 php artisan migrate
 php artisan cache:clear
