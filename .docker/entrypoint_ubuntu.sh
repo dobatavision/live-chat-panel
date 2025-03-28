@@ -29,10 +29,20 @@ service php8.3-fpm restart
 #To be sure that the database is up and running
 sleep 10
 
+npm run build
+
+sleep 2
+
 php artisan migrate
 php artisan cache:clear
 php artisan view:clear
 php artisan route:clear
+
+php artisan db:seed --class=DatabaseSeeder
+
+php artisan reverb:start
+php artisan queue:listen
+
 
 
 # echo "* * * * * cd /mnt/live-chat-panel && php artisan schedule:run >> /dev/null 2>&1" | crontab -

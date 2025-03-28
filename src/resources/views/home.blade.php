@@ -127,6 +127,22 @@
             </button>
             @endif
         </nav>
+
+        <div class="datetime text-right mt-4">
+            {{ now()->format('l, F j, Y') }}<br>
+            <span id="live-time"></span>
+            <script>
+                function updateTime() {
+                    const now = new Date();
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    const seconds = String(now.getSeconds()).padStart(2, '0');
+                    document.getElementById('live-time').textContent = `${hours}:${minutes}:${seconds}`;
+                }
+                setInterval(updateTime, 1000);
+                updateTime();
+            </script>
+        </div>
     </header>
     <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
         <div class="text-center">

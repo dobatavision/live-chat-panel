@@ -169,7 +169,22 @@
             </form>
         </nav>
         <div class="logged-in-user">
-            Logged as: {{ auth()->user()->email }}, ({{ auth()->user()->role}})
+            Logged as: {{ auth()->user()->email }}, ({{ auth()->user()->getRoleNames()->implode(', ') }})
+        </div>
+        <div class="datetime text-right mt-4">
+            {{ now()->format('l, F j, Y') }}<br>
+            <span id="live-time"></span>
+            <script>
+                function updateTime() {
+                    const now = new Date();
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    const seconds = String(now.getSeconds()).padStart(2, '0');
+                    document.getElementById('live-time').textContent = `${hours}:${minutes}:${seconds}`;
+                }
+                setInterval(updateTime, 1000);
+                updateTime();
+            </script>
         </div>
     </header>
     <div class="w-full lg:max-w-4xl max-w-[335px] mx-auto">
@@ -178,44 +193,41 @@
         </div>
 
         <div class="w-full">
-            <form method="POST" action="{{ route('updateUsers') }}">
-                @csrf
-                <table class="min-w-full bg-white">
-                    <thead>
-                        <tr>
-                            <th class="py-2">Name</th>
-                            <th class="py-2">Email</th>
-                            <th class="py-2">Role</th>
-                            <th class="py-2">Actions</th>
-                            <th class="py-2">Chat</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $user)
-                        <tr>
-                            <td class="py-2">
-                                <input type="text" name="users[{{ $user->id }}][name]" value="{{ $user->name }}" class="input-field">
-                            </td>
-                            <td class="py-2">
-                                <input type="email" name="users[{{ $user->id }}][email]" value="{{ $user->email }}" class="input-field">
-                            </td>
-                            <td class="py-2">
-                                <select name="users[{{ $user->id }}][role]" class="input-field">
-                                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
-                                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                </select>
-                            </td>
-                            <td class="py-2 text-center">
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </td>
-                            <td class="py-2 text-center">
-                                <button type="button" class="btn btn-chat" onclick="openChat({{ auth()->user()->id }}, {{ $user->id }})" {{ $user->id === auth()->user()->id ? 'disabled' : '' }}>Chat</button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </form>
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-2">Name</th>
+                        <th class="py-2">Email</th>
+                        <th class="py-2">Role</th>
+                        <th class="py-2">Actions</th>
+                        <th class="py-2">Chat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $user)
+                    <tr>
+                        <td>
+                            <input type="text" name="name" value="{{ $user->name }}" class="input-field" data-user-id="{{ $user->id }}">
+                        </td>
+                        <td>
+                            <input type="email" name="email" value="{{ $user->email }}" class="input-field" data-user-id="{{ $user->id }}">
+                        </td>
+                        <td>
+                            <select name="role" class="input-field" data-user-id="{{ $user->id }}">
+                                <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-primary save-button" data-user-id="{{ $user->id }}">Save</button>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-chat" onclick="openChat({{ auth()->user()->id }}, {{ $user->id }})" {{ $user->id === auth()->user()->id ? 'disabled' : '' }}>Chat</button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -323,6 +335,43 @@
         // Call the initializeChatListeners function on page load
         document.addEventListener('DOMContentLoaded', () => {
             initializeChatListeners({{ auth()->user()->id }});
+
+            // Add event listeners to all save buttons
+            document.querySelectorAll('.save-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    const userId = this.getAttribute('data-user-id');
+                    const row = this.closest('tr');
+
+                    const name = row.querySelector(`input[name="name"][data-user-id="${userId}"]`).value;
+                    const email = row.querySelector(`input[name="email"][data-user-id="${userId}"]`).value;
+                    const role = row.querySelector(`select[name="role"][data-user-id="${userId}"]`).value;
+
+                    fetch(`/manage/update`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            name: name,
+                            email: email,
+                            role: role,
+                        }),
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert('User updated successfully!');
+                            } else {
+                                alert('Only Admin can update user details.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while updating the user.');
+                        });
+                });
+            });
         });
 
         function closeModal(event, modalId) {
@@ -331,7 +380,6 @@
             if (event.target.id === modalId) {
                 modal.style.display = 'none';
 
-                // Mark the current channel as closed
                 if (channelName) {
                     delete openModals[channelName];
                 }

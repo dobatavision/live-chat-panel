@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -41,8 +42,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
         ]);
+        $user->assignRole($request->role);
 
         Auth::login($user);
 
@@ -51,7 +52,6 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        // dd('logout');
         Auth::logout();
 
         $request->session()->invalidate();

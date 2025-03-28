@@ -19,10 +19,8 @@ class MessageController extends Controller
         $senderId = Auth::user()->id;
         $userName = Auth::user()->name;
 
-        // dd($channelName);
-        // Broadcast the message
-        // broadcast(new MessageSentEvent($message, $senderId, $receiverId, $userName, $channelName))->toOthers();
         event(new MessageSentEvent($message, $senderId, $receiverId, $userName, $channelName));
+        // broadcast(new MessageSentEvent($message, $senderId, $receiverId, $userName, $channelName))->toOthers();
         // MessageSentEvent::dispatch($message, $senderId, $receiverId, $userName, $channelName);
 
         return response()->json(['status' => 'Message sent!']);
