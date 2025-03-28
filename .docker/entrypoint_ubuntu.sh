@@ -13,7 +13,7 @@ service nginx start
 sleep 2
 php composer.phar install
 
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+wget -qO- https://deb.nodesource.com/setup_20.x | bash -
 apt-get install -y nodejs
 
 node -v
