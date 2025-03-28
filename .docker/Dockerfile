@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install -y \
     php-gd \
     nginx \
     wget \
-    curl \
     cron \
     && apt-get clean && apt-get install mc -y && apt-get install mysql-client -y && apt-get install git -y && apt-get install composer -y \
     
