@@ -52,6 +52,6 @@ sleep 5
 php artisan reverb:start &
 php artisan queue:listen &
 
-tail -f /dev/null &
+tail -f /dev/null
 
 
