@@ -6,7 +6,7 @@ if [ ! -f "composer.phar" ]; then
     wget https://getcomposer.org/download/2.8.6/composer.phar
 fi
 
-# cp .env.example .env
+cp .env.example .env
 
 service php8.3-fpm start
 service nginx start
@@ -43,14 +43,7 @@ php artisan db:seed --class=DatabaseSeeder
 php artisan reverb:start
 php artisan queue:listen
 
-
-
-# echo "* * * * * cd /mnt/live-chat-panel && php artisan schedule:run >> /dev/null 2>&1" | crontab -
-# service cron start
-
 sleep 5
-
-# php artisan queue:work --tries=3 --timeout=300 --memory=512
 
 tail -f /dev/null
 
