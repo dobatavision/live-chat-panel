@@ -25,8 +25,9 @@
 
 3. Access the application at [http://localhost:8081](http://localhost:8081)
    You can login from two browsers with different users and open chat beetween them and fun :)
+   Automatic open chat modal view when someone send message to you.
    Only Admin can change the data of users 'role' with middleware Spatie.
-   
+
 
 4. View the logs of the Ubuntu container:
    ```bash

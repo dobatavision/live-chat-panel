@@ -20,9 +20,12 @@ RUN apt-get update && apt-get install -y \
     php-gd \
     nginx \
     wget \
+    curl \
     cron \
     && apt-get clean && apt-get install mc -y && apt-get install mysql-client -y && apt-get install git -y && apt-get install composer -y \
-    && apt-get install nodejs -y && apt-get install npm -y
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get install -y npm
 
 # Copy default nginx config
 COPY default /etc/nginx/sites-available/default
