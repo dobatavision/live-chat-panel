@@ -47,11 +47,11 @@ php artisan route:clear
 
 php artisan db:seed --class=DatabaseSeeder
 
-php artisan reverb:start
-php artisan queue:listen
-
 sleep 5
 
-tail -f /dev/null
+php artisan reverb:start &
+php artisan queue:listen &
+
+tail -f /dev/null &
 
 
