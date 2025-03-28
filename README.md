@@ -2,7 +2,7 @@
 Admin and User auth panel with live chat socket between them
 
 # Docker Ubuntu and MySQL
-# PHP 8.3.17 / Laravel 12.0.1
+# PHP 8.3.19 / Laravel 12.3.0 / NodeJS v20.19.0 / npm 10.8.2 
 
 ## Setup Instructions
 
@@ -16,7 +16,10 @@ Admin and User auth panel with live chat socket between them
    ```bash
    cd live-chat-panel/.docker
    docker-compose up --build -d
+
    ```
+   wait at least 30sec after the containers are up
+   
     docker-compose version 1.29.2, build unknown
 
     docker-py version: 5.0.3
